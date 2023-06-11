@@ -4,7 +4,7 @@ Recreating the NES Mario game using a Java 2D Game Engine. This project utilizes
 
 ## Project Description
 
-The Mario 2D Game Engine aims to provide a Java-based game engine capable of recreating the classic NES Mario game. Although the project is currently in its early stages and is quite basic, the intention is to further develop the engine to enable the creation of various other games, not limited to Mario.
+The 2D Game Engine aims to provide a Java-based game engine capable of recreating the classic NES Mario game. Although the project is currently in its early stages and is quite basic, the intention is to further develop the engine to enable the creation of various other games, not limited to Mario.
 
 ## Usage
 
