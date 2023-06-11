@@ -3,8 +3,7 @@ package components;
 import jade.KeyListener;
 import jade.Window;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class GizmoSystem extends Component {
     private Spritesheet gizmos;
@@ -23,7 +22,7 @@ public class GizmoSystem extends Component {
     }
 
     @Override
-    public void update(float dt) {
+    public void editorUpdate(float dt) {
         if (usingGizmo == 0) {
             gameObject.getComponent(TranslateGizmo.class).setUsing();
             gameObject.getComponent(ScaleGizmo.class).setNotUsing();
