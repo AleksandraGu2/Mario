@@ -26,18 +26,16 @@ public class Transform extends Component {
     public void init(Vector2f position, Vector2f scale) {
         this.position = position;
         this.scale = scale;
-        this.rotation = 0;
         this.zIndex = 0;
     }
 
     public Transform copy() {
-        Transform copy = new Transform(new Vector2f(this.position), new Vector2f(this.scale));
-        copy.rotation = this.rotation;
-        return copy;
+        return new Transform(new Vector2f(this.position), new Vector2f(this.scale));
     }
 
     @Override
     public void imgui() {
+        gameObject.name = JImGui.inputText("Name: ", gameObject.name);
         JImGui.drawVec2Control("Position", this.position);
         JImGui.drawVec2Control("Scale", this.scale, 32.0f);
         this.rotation = JImGui.dragFloat("Rotation", this.rotation);
@@ -47,7 +45,6 @@ public class Transform extends Component {
     public void copy(Transform to) {
         to.position.set(this.position);
         to.scale.set(this.scale);
-        to.rotation = this.rotation;
     }
 
     @Override

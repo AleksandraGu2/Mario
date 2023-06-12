@@ -87,7 +87,7 @@ public class DebugDraw {
         }
 
         glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, Arrays.copyOfRange(vertexArray, 0, lines.size() * 6 * 2));
+        glBufferData(GL_ARRAY_BUFFER, vertexArray, GL_DYNAMIC_DRAW);
 
         // Use our shader
         shader.use();
@@ -100,7 +100,7 @@ public class DebugDraw {
         glEnableVertexAttribArray(1);
 
         // Draw the batch
-        glDrawArrays(GL_LINES, 0, lines.size() * 2);
+        glDrawArrays(GL_LINES, 0, lines.size() * 6 * 2);
 
         // Disable Location
         glDisableVertexAttribArray(0);
