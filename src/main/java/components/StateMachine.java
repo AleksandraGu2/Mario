@@ -78,8 +78,6 @@ public class StateMachine extends Component {
                 return;
             }
         }
-
-        System.out.println("Unable to find trigger '" + trigger + "'");
     }
 
     private int stateIndexOf(String stateTitle) {
@@ -111,6 +109,7 @@ public class StateMachine extends Component {
             SpriteRenderer sprite = gameObject.getComponent(SpriteRenderer.class);
             if (sprite != null) {
                 sprite.setSprite(currentState.getCurrentSprite());
+                sprite.setTexture(currentState.getCurrentSprite().getTexture());
             }
         }
     }
@@ -122,6 +121,7 @@ public class StateMachine extends Component {
             SpriteRenderer sprite = gameObject.getComponent(SpriteRenderer.class);
             if (sprite != null) {
                 sprite.setSprite(currentState.getCurrentSprite());
+                sprite.setTexture(currentState.getCurrentSprite().getTexture());
             }
         }
     }

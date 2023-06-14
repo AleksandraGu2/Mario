@@ -64,8 +64,8 @@ public class MouseControls extends Component {
                 float halfWidth = Settings.GRID_WIDTH / 2.0f;
                 float halfHeight = Settings.GRID_HEIGHT / 2.0f;
                 if (MouseListener.isDragging() &&
-                        !blockInSquare(holdingObject.transform.position.x - halfWidth,
-                                holdingObject.transform.position.y - halfHeight)) {
+                    !blockInSquare(holdingObject.transform.position.x - halfWidth,
+                            holdingObject.transform.position.y - halfHeight)) {
                     place();
                 } else if (!MouseListener.isDragging() && debounce < 0) {
                     place();

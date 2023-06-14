@@ -54,7 +54,7 @@ public class AssetPool {
         }
         return AssetPool.spritesheets.getOrDefault(file.getAbsolutePath(), null);
     }
-
+    
     public static Collection<Sound> getAllSounds() {
         return sounds.values();
     }

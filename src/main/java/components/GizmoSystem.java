@@ -3,7 +3,8 @@ package components;
 import jade.KeyListener;
 import jade.Window;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
 public class GizmoSystem extends Component {
     private Spritesheet gizmos;

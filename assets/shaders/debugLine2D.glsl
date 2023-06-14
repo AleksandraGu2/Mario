@@ -10,9 +10,9 @@ uniform mat4 uProjection;
 
 void main()
 {
-fColor = aColor;
+    fColor = aColor;
 
-gl_Position = uProjection * uView * vec4(aPos, 1.0);
+    gl_Position = uProjection * uView * vec4(aPos, 1.0);
 }
 
 #type fragment
@@ -23,5 +23,5 @@ out vec4 color;
 
 void main()
 {
-color = vec4(fColor, 1);
+    color = vec4(fColor, 1);
 }
