@@ -41,7 +41,6 @@ public class Box2D {
 
         if (rigidbody.getRotation() != 0.0f) {
             for (Vector2f vert : vertices) {
-                // Rotates point(Vector2f) about center(Vector2f) by rotation(float in degrees)
                 JMath.rotate(vert, this.rigidbody.getRotation(), this.rigidbody.getPosition());
             }
         }

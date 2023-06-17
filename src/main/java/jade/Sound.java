@@ -18,7 +18,6 @@ public class Sound {
     public Sound(String filepath, boolean loops) {
         this.filepath = filepath;
 
-        // Allocate space to store the return information from stb
         stackPush();
         IntBuffer channelsBuffer = stackMallocInt(1);
         stackPush();
@@ -33,14 +32,12 @@ public class Sound {
             return;
         }
 
-        // Retrieve the extra information that was stored in the buffers by stb
         int channels = channelsBuffer.get();
         int sampleRate = sampleRateBuffer.get();
-        // Free
+
         stackPop();
         stackPop();
 
-        // Find the correct openAL format
         int format = -1;
         if (channels == 1) {
             format = AL_FORMAT_MONO16;
@@ -51,7 +48,6 @@ public class Sound {
         bufferId = alGenBuffers();
         alBufferData(bufferId, format, rawAudioBuffer, sampleRate);
 
-        // Generate the source
         sourceId = alGenSources();
 
         alSourcei(sourceId, AL_BUFFER, bufferId);
@@ -59,7 +55,6 @@ public class Sound {
         alSourcei(sourceId, AL_POSITION, 0);
         alSourcef(sourceId, AL_GAIN, 0.3f);
 
-        // Free stb raw audio buffer
         free(rawAudioBuffer);
     }
 

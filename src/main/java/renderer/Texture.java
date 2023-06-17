@@ -22,7 +22,6 @@ public class Texture {
     public Texture(int width, int height) {
         this.filepath = "Generated";
 
-        // Generate texture on GPU
         texID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, texID);
 
@@ -36,17 +35,12 @@ public class Texture {
     public void init(String filepath) {
         this.filepath = filepath;
 
-        // Generate texture on GPU
         texID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, texID);
 
-        // Set texture parameters
-        // Repeat image in both directions
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        // When stretching the image, pixelate
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        // When shrinking an image, pixelate
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         IntBuffer width = BufferUtils.createIntBuffer(1);

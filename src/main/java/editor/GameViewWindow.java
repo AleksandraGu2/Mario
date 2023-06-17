@@ -57,7 +57,7 @@ public class GameViewWindow {
         float aspectWidth = windowSize.x;
         float aspectHeight = aspectWidth / Window.getTargetAspectRatio();
         if (aspectHeight > windowSize.y) {
-            // We must switch to pillarbox mode
+
             aspectHeight = windowSize.y;
             aspectWidth = aspectHeight * Window.getTargetAspectRatio();
         }

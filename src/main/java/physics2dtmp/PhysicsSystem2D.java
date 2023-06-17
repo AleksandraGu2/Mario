@@ -44,7 +44,6 @@ public class PhysicsSystem2D {
         bodies2.clear();
         collisions.clear();
 
-        // Find any collisions
         int size = rigidbodies.size();
         for (int i=0; i < size; i++) {
             for (int j=i; j < size; j++) {
@@ -68,11 +67,8 @@ public class PhysicsSystem2D {
             }
         }
 
-        // Update the forces
         forceRegistry.updateForces(fixedUpdate);
 
-        // Resolve collisions via iterative impulse resolution
-        // iterate a certain amount of times to get an approximate solution
         for (int k=0; k < impulseIterations; k++) {
             for (int i=0; i < collisions.size(); i++) {
                 int jSize = collisions.get(i).getContactPoints().size();
@@ -84,16 +80,12 @@ public class PhysicsSystem2D {
             }
         }
 
-        // Update the velocities of all rigidbodies
         for (int i=0; i < rigidbodies.size(); i++) {
             rigidbodies.get(i).physicsUpdate(fixedUpdate);
         }
-
-        // Apply linear projection
     }
 
     private void applyImpulse(Rigidbody2D a, Rigidbody2D b, CollisionManifold m) {
-        // Linear velocity
         float invMass1 = a.getInverseMass();
         float invMass2 = b.getInverseMass();
         float invMassSum = invMass1 + invMass2;
@@ -101,10 +93,8 @@ public class PhysicsSystem2D {
             return;
         }
 
-        // Relative velocity
         Vector2f relativeVel = new Vector2f(b.getVelocity()).sub(a.getVelocity());
         Vector2f relativeNormal = new Vector2f(m.getNormal()).normalize();
-        // Moving away from each other? Do nothing
         if (relativeVel.dot(relativeNormal) > 0.0f) {
             return;
         }

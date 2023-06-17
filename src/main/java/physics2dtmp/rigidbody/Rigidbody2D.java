@@ -20,7 +20,6 @@ public class Rigidbody2D extends Component {
     private float linearDamping = 0.0f;
     private float angularDamping = 0.0f;
 
-    // Coefficient of restitution
     private float cor = 1.0f;
 
     private boolean fixedRotation = false;
@@ -32,11 +31,9 @@ public class Rigidbody2D extends Component {
     public void physicsUpdate(float dt) {
         if (this.mass == 0.0f) return;
 
-        // Calculate linear velocity
         Vector2f acceleration = new Vector2f(forceAccum).mul(this.inverseMass);
         linearVelocity.add(acceleration.mul(dt));
 
-        // Update the linear position
         this.position.add(new Vector2f(linearVelocity).mul(dt));
 
         synchCollisionTransforms();

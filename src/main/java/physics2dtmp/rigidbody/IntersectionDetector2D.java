@@ -6,9 +6,7 @@ import renderer.Line2D;
 import util.JMath;
 
 public class IntersectionDetector2D {
-    // ========================================================
-    // Point vs. Primitive Tests
-    // ========================================================
+
     public static boolean pointOnLine(Vector2f point, Line2D line) {
         float dy = line.getEnd().y - line.getStart().y;
         float dx = line.getEnd().x - line.getStart().x;
@@ -19,7 +17,6 @@ public class IntersectionDetector2D {
 
         float b = line.getEnd().y - (m * line.getEnd().x);
 
-        // Check the line equation
         return point.y == m * point.x + b;
     }
 
@@ -51,9 +48,6 @@ public class IntersectionDetector2D {
                 pointLocalBoxSpace.y <= max.y && min.y <= pointLocalBoxSpace.y;
     }
 
-    // ========================================================
-    // Line vs. Primitive Tests
-    // ========================================================
     public static boolean lineAndCircle(Line2D line, Circle circle) {
         if (pointInCircle(line.getStart(), circle) || pointInCircle(line.getEnd(), circle)) {
             return true;
@@ -61,8 +55,6 @@ public class IntersectionDetector2D {
 
         Vector2f ab = new Vector2f(line.getEnd()).sub(line.getStart());
 
-        // Project point (circle position) onto ab (line segment)
-        // parameterized position t
         Vector2f circleCenter = circle.getCenter();
         Vector2f centerToLineStart = new Vector2f(circleCenter).sub(line.getStart());
         float t = centerToLineStart.dot(ab) / ab.dot(ab);
@@ -71,7 +63,6 @@ public class IntersectionDetector2D {
             return false;
         }
 
-        // Find the closest point to the line segment
         Vector2f closestPoint = new Vector2f(line.getStart()).add(ab.mul(t));
 
         return pointInCircle(closestPoint, circle);
@@ -116,7 +107,6 @@ public class IntersectionDetector2D {
         return lineAndAABB(localLine, aabb);
     }
 
-    // Raycasts
     public static boolean raycast(Circle circle, Ray2D ray, RaycastResult result) {
         RaycastResult.reset(result);
 
@@ -124,7 +114,6 @@ public class IntersectionDetector2D {
         float radiusSquared = circle.getRadius() * circle.getRadius();
         float originToCircleLengthSquared = originToCircle.lengthSquared();
 
-        // Project the vector from the ray origin onto the direction of the ray
         float a = originToCircle.dot(ray.getDirection());
         float bSq = originToCircleLengthSquared - (a * a);
         if (radiusSquared - bSq < 0.0f) {
@@ -134,7 +123,6 @@ public class IntersectionDetector2D {
         float f = (float)Math.sqrt(radiusSquared - bSq);
         float t = 0;
         if (originToCircleLengthSquared < radiusSquared) {
-            // Ray starts inside the circle
             t = a + f;
         } else {
             t = a - f;
@@ -172,7 +160,7 @@ public class IntersectionDetector2D {
         }
 
         float t = (tmin < 0f) ? tmax : tmin;
-        boolean hit = t > 0f; //&& t * t < ray.getMaximum();
+        boolean hit = t > 0f;
         if (!hit) {
             return false;
         }
@@ -199,12 +187,10 @@ public class IntersectionDetector2D {
         JMath.rotate(yAxis, -box.getRigidbody().getRotation(), new Vector2f(0, 0));
 
         Vector2f p = new Vector2f(box.getRigidbody().getPosition()).sub(ray.getOrigin());
-        // Project the direction of the ray onto each axis of the box
         Vector2f f = new Vector2f(
                 xAxis.dot(ray.getDirection()),
                 yAxis.dot(ray.getDirection())
         );
-        // Next, project p onto every axis of the box
         Vector2f e = new Vector2f(
                 xAxis.dot(p),
                 yAxis.dot(p)
@@ -213,22 +199,20 @@ public class IntersectionDetector2D {
         float[] tArr = {0, 0, 0, 0};
         for (int i=0; i < 2; i++) {
             if (JMath.compare(f.get(i), 0)) {
-                // If the ray is parallel to the current axis, and the origin of the
-                // ray is not inside, we have no hit
                 if (-e.get(i) - size.get(i) > 0 || -e.get(i) + size.get(i) < 0) {
                     return false;
                 }
-                f.setComponent(i, 0.00001f); // Set it to small value, to avoid divide by zero
+                f.setComponent(i, 0.00001f);
             }
-            tArr[i * 2 + 0] = (e.get(i) + size.get(i)) / f.get(i); // tmax for this axis
-            tArr[i * 2 + 1] = (e.get(i) - size.get(i)) / f.get(i); // tmin for this axis
+            tArr[i * 2 + 0] = (e.get(i) + size.get(i)) / f.get(i);
+            tArr[i * 2 + 1] = (e.get(i) - size.get(i)) / f.get(i);
         }
 
         float tmin = Math.max(Math.min(tArr[0], tArr[1]), Math.min(tArr[2], tArr[3]));
         float tmax = Math.min(Math.max(tArr[0], tArr[1]), Math.max(tArr[2], tArr[3]));
 
         float t = (tmin < 0f) ? tmax : tmin;
-        boolean hit = t > 0f; //&& t * t < ray.getMaximum();
+        boolean hit = t > 0f;
         if (!hit) {
             return false;
         }
@@ -245,9 +229,6 @@ public class IntersectionDetector2D {
         return true;
     }
 
-    // =============================================================================
-    // Circle vs. Primitive tests
-    // =============================================================================
     public static boolean circleAndLine(Circle circle, Line2D line) {
         return lineAndCircle(line, circle);
     }
@@ -280,11 +261,8 @@ public class IntersectionDetector2D {
     }
 
     public static boolean circleAndBox2D(Circle circle, Box2D box) {
-        // Treat the box just like an AABB, after we rotate the stuff
         Vector2f min = new Vector2f();
         Vector2f max = new Vector2f(box.getHalfSize()).mul(2.0f);
-
-        // Create a circle in box's local space
         Vector2f r = new Vector2f(circle.getCenter()).sub(box.getRigidbody().getPosition());
         JMath.rotate(r, -box.getRigidbody().getRotation(), new Vector2f());
         Vector2f localCirclePos = new Vector2f(r).add(box.getHalfSize());
@@ -306,9 +284,6 @@ public class IntersectionDetector2D {
         return circleToBox.lengthSquared() <= circle.getRadius() * circle.getRadius();
     }
 
-    // =============================================================================
-    // AABB vs. Primitive tests
-    // =============================================================================
     public static boolean AABBAndCircle(AABB box, Circle circle) {
         return circleAndAABB(circle, box);
     }
@@ -338,9 +313,6 @@ public class IntersectionDetector2D {
         return true;
     }
 
-    // =============================================================================
-    // SAT helpers
-    // =============================================================================
     private static boolean overlapOnAxis(AABB b1, AABB b2, Vector2f axis) {
         Vector2f interval1 = getInterval(b1, axis);
         Vector2f interval2 = getInterval(b2, axis);

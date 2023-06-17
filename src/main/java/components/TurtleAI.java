@@ -64,8 +64,7 @@ public class TurtleAI extends Component {
         this.rb.setVelocity(velocity);
 
         if (this.gameObject.transform.position.x <
-                Window.getScene().camera().position.x - 0.5f) {// ||
-                //this.gameObject.transform.position.y < 0.0f) {
+                Window.getScene().camera().position.x - 0.5f) {
             this.gameObject.destroy();
         }
     }

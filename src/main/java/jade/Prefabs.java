@@ -78,7 +78,6 @@ public class Prefabs {
         bigJump.addFrame(bigPlayerSprites.getSprite(5), 0.1f);
         bigJump.setLoop(false);
 
-        // Fire mario animations
         int fireOffset = 21;
         AnimationState fireRun = new AnimationState();
         fireRun.title = "FireRun";

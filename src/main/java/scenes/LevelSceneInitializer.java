@@ -1,17 +1,9 @@
 package scenes;
 
 import components.*;
-import imgui.ImGui;
-import imgui.ImVec2;
-import jade.*;
-import org.joml.Vector2f;
-import physics2d.components.Box2DCollider;
-import physics2d.components.Rigidbody2D;
-import physics2d.enums.BodyType;
+import jade.*;;
 import util.AssetPool;
 
-import java.io.File;
-import java.util.Collection;
 
 public class LevelSceneInitializer extends SceneInitializer {
     public LevelSceneInitializer() {

@@ -28,7 +28,6 @@ public class ImGuiLayer {
 
     private long glfwWindow;
 
-    // LWJGL3 renderer (SHOULD be initialized)
     private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
     private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
 
@@ -49,23 +48,16 @@ public class ImGuiLayer {
         return this.gameViewWindow;
     }
 
-    // Initialize Dear ImGui.
     public void initImGui() {
-        // IMPORTANT!!
-        // This line is critical for Dear ImGui to work.
         ImGui.createContext();
 
-        // ------------------------------------------------------------
-        // Initialize ImGuiIO config
         final ImGuiIO io = ImGui.getIO();
 
-        io.setIniFilename("imgui.ini"); // We don't want to save .ini file
+        io.setIniFilename("imgui.ini");
         io.addConfigFlags(ImGuiConfigFlags.DockingEnable);
         io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
         io.setBackendPlatformName("imgui_java_impl_glfw");
 
-        // ------------------------------------------------------------
-        // GLFW callbacks to handle user input
 
         glfwSetKeyCallback(glfwWindow, (w, key, scancode, action, mods) -> {
             if (action == GLFW_PRESS) {
@@ -140,51 +132,36 @@ public class ImGuiLayer {
             }
         });
 
-        // ------------------------------------------------------------
-        // Fonts configuration
-        // Read: https://raw.githubusercontent.com/ocornut/imgui/master/docs/FONTS.txt
-
         if (new File("C:/Windows/Fonts/segoeui.ttf").isFile()) {
             final ImFontAtlas fontAtlas = io.getFonts();
-            final ImFontConfig fontConfig = new ImFontConfig(); // Natively allocated object, should be explicitly destroyed
+            final ImFontConfig fontConfig = new ImFontConfig();
 
-            // Glyphs could be added per-font as well as per config used globally like here
             fontConfig.setGlyphRanges(fontAtlas.getGlyphRangesDefault());
 
-            // Fonts merge example
             fontConfig.setPixelSnapH(true);
             fontAtlas.addFontFromFileTTF("C:/Windows/Fonts/segoeui.ttf", 32, fontConfig);
-            fontConfig.destroy(); // After all fonts were added we don't need this config more
+            fontConfig.destroy();
         } else if (new File("C:/Windows/Fonts/Cour.ttf").isFile()) {
-            // Fallback font
 
             final ImFontAtlas fontAtlas = io.getFonts();
-            final ImFontConfig fontConfig = new ImFontConfig(); // Natively allocated object, should be explicitly destroyed
+            final ImFontConfig fontConfig = new ImFontConfig();
 
-            // Glyphs could be added per-font as well as per config used globally like here
             fontConfig.setGlyphRanges(fontAtlas.getGlyphRangesDefault());
 
-            // Fonts merge example
             fontConfig.setPixelSnapH(true);
             fontAtlas.addFontFromFileTTF("C:/Windows/Fonts/Cour.ttf", 32, fontConfig);
-            fontConfig.destroy(); // After all fonts were added we don't need this config more
+            fontConfig.destroy();
         }
 
 
-        // Method initializes LWJGL3 renderer.
-        // This method SHOULD be called after you've initialized your ImGui configuration (fonts and so on).
-        // ImGui context should be created as well.
         imGuiGlfw.init(glfwWindow, false);
         imGuiGl3.init("#version 330 core");
     }
 
     public void update(float dt, Scene currentScene) {
         startFrame(dt);
-
-        // Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
         setupDockspace();
         currentScene.imgui();
-        //ImGui.showDemoWindow();
         gameViewWindow.imgui();
         propertiesWindow.imgui();
         sceneHeirarchyWindow.imgui();
@@ -202,9 +179,6 @@ public class ImGuiLayer {
         glViewport(0, 0, Window.getWidth(), Window.getHeight());
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT);
-
-        // After Dear ImGui prepared a draw data, we use it in the LWJGL3 renderer.
-        // At that moment ImGui will be rendered to the current OpenGL context.
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
 
@@ -214,7 +188,6 @@ public class ImGuiLayer {
         glfwMakeContextCurrent(backupWindowPtr);
     }
 
-    // If you want to clean a room after yourself - do it by yourself
     private void destroyImGui() {
         imGuiGl3.dispose();
         ImGui.destroyContext();
@@ -237,12 +210,8 @@ public class ImGuiLayer {
 
         ImGui.begin("Dockspace Demo", new ImBoolean(true), windowFlags);
         ImGui.popStyleVar(2);
-
-        // Dockspace
         ImGui.dockSpace(ImGui.getID("Dockspace"));
-
         menuBar.imgui();
-
         ImGui.end();
     }
 

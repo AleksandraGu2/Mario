@@ -8,7 +8,6 @@ import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 

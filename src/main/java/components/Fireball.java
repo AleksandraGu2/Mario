@@ -1,6 +1,5 @@
 package components;
 
-import jade.Camera;
 import jade.GameObject;
 import jade.Window;
 import org.jbox2d.dynamics.contacts.Contact;

@@ -23,8 +23,6 @@ public class Collisions {
             return result;
         }
 
-        // Multiply by 0.5 because we want to separate each circle the same
-        // amount. Consider updating to factor in the momentum and velocity
         float depth = Math.abs(distance.length() - sumRadii) * 0.5f;
         Vector2f normal = new Vector2f(distance);
         normal.normalize();

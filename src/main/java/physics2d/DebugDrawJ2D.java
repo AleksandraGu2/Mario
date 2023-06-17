@@ -53,7 +53,6 @@ public class DebugDrawJ2D extends DebugDraw {
             drawSegment(new Vec2(x1, y1), new Vec2(x2, y2), color);
         }
 
-        // outside
         drawPolygon(vertices, vertexCount, color);
     }
 
@@ -64,25 +63,7 @@ public class DebugDrawJ2D extends DebugDraw {
 
     @Override
     public void drawTransform(Transform xf) {
-//        Graphics2D g = getGraphics();
-//        getWorldToScreenToOut(xf.p, temp);
-//        temp2.setZero();
-//        float k_axisScale = 0.4f;
-//
-//        Color c = cpool.getColor(1, 0, 0);
-//        g.setColor(c);
-//
-//        temp2.x = xf.p.x + k_axisScale * xf.q.c;
-//        temp2.y = xf.p.y + k_axisScale * xf.q.s;
-//        getWorldToScreenToOut(temp2, temp2);
-//        g.drawLine((int) temp.x, (int) temp.y, (int) temp2.x, (int) temp2.y);
-//
-//        c = cpool.getColor(0, 1, 0);
-//        g.setColor(c);
-//        temp2.x = xf.p.x + k_axisScale * xf.q.c;
-//        temp2.y = xf.p.y + k_axisScale * xf.q.s;
-//        getWorldToScreenToOut(temp2, temp2);
-//        g.drawLine((int) temp.x, (int) temp.y, (int) temp2.x, (int) temp2.y);
+
     }
 
     private void generateCirle(Vec2 argCenter, float argRadius, Vec2[] argPoints, int argNumPoints) {

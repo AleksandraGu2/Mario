@@ -6,11 +6,8 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import util.AssetPool;
 import util.JMath;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -20,7 +17,7 @@ public class DebugDraw {
     private static int MAX_LINES = 5000;
 
     private static List<Line2D> lines = new ArrayList<>();
-    // 6 floats per vertex, 2 vertices per line
+
     private static float[] vertexArray = new float[MAX_LINES * 6 * 2];
     private static Shader shader = AssetPool.getShader("assets/shaders/debugLine2D.glsl");
 
@@ -30,16 +27,14 @@ public class DebugDraw {
     private static boolean started = false;
 
     public static void start() {
-        // Generate the vao
+
         vaoID = glGenVertexArrays();
         glBindVertexArray(vaoID);
 
-        // Create the vbo and buffer some memory
         vboID = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vboID);
         glBufferData(GL_ARRAY_BUFFER, vertexArray.length * Float.BYTES, GL_DYNAMIC_DRAW);
 
-        // Enable the vertex array attributes
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * Float.BYTES, 0);
         glEnableVertexAttribArray(0);
 
@@ -55,7 +50,6 @@ public class DebugDraw {
             started = true;
         }
 
-        // Remove dead lines
         for (int i=0; i < lines.size(); i++) {
             if (lines.get(i).beginFrame() < 0) {
                 lines.remove(i);
@@ -74,12 +68,10 @@ public class DebugDraw {
                 Vector2f position = i == 0 ? line.getFrom() : line.getTo();
                 Vector3f color = line.getColor();
 
-                // Load position
                 vertexArray[index] = position.x;
                 vertexArray[index + 1] = position.y;
                 vertexArray[index + 2] = -10.0f;
 
-                // Load the color
                 vertexArray[index + 3] = color.x;
                 vertexArray[index + 4] = color.y;
                 vertexArray[index + 5] = color.z;
@@ -90,31 +82,23 @@ public class DebugDraw {
         glBindBuffer(GL_ARRAY_BUFFER, vboID);
         glBufferData(GL_ARRAY_BUFFER, vertexArray, GL_DYNAMIC_DRAW);
 
-        // Use our shader
         shader.use();
         shader.uploadMat4f("uProjection", Window.getScene().camera().getProjectionMatrix());
         shader.uploadMat4f("uView", Window.getScene().camera().getViewMatrix());
 
-        // Bind the vao
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
 
-        // Draw the batch
         glDrawArrays(GL_LINES, 0, lines.size());
 
-        // Disable Location
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
         glBindVertexArray(0);
 
-        // Unbind shader
         shader.detach();
     }
 
-    // ==================================================
-    // Add line2D methods
-    // ==================================================
     public static void addLine2D(Vector2f from, Vector2f to) {
         // TODO: ADD CONSTANTS FOR COMMON COLORS
         addLine2D(from, to, new Vector3f(0, 1, 0), 1);
@@ -139,9 +123,6 @@ public class DebugDraw {
         DebugDraw.lines.add(new Line2D(from, to, color, lifetime));
     }
 
-    // ==================================================
-    // Add Box2D methods
-    // ==================================================
     public static void addBox2D(Vector2f center, Vector2f dimensions, float rotation) {
         // TODO: ADD CONSTANTS FOR COMMON COLORS
         addBox2D(center, dimensions, rotation, new Vector3f(0, 1, 0), 1);
@@ -173,9 +154,6 @@ public class DebugDraw {
         addLine2D(vertices[2], vertices[3], color, lifetime);
     }
 
-    // ==================================================
-    // Add Circle methods
-    // ==================================================
     public static void addCircle(Vector2f center, float radius) {
         // TODO: ADD CONSTANTS FOR COMMON COLORS
         addCircle(center, radius, new Vector3f(0, 1, 0), 1);
